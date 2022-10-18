@@ -1,15 +1,10 @@
 import React from "react";
+import { RouterProvider } from "react-router-dom";
 import "./App.css";
-import Button from "react-bootstrap/Button";
+import { router } from "./routes/routes";
 
 const App = () => {
-  return (
-    <div>
-      <Button variant="success" as="button">
-        Success
-      </Button>
-    </div>
-  );
+  return <RouterProvider router={router}></RouterProvider>;
 };
 
 export default App;
