@@ -6,6 +6,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Offcanvas from "react-bootstrap/Offcanvas";
+import LeftSideNav from "../LeftSideNav/LeftSideNav";
 
 const NavigationBar = () => {
   const navbarExpand = "lg";
@@ -142,6 +143,10 @@ const NavigationBar = () => {
               />
               <Button variant="outline-success">Search</Button>
             </Form>
+
+            <div className="d-lg-none pt-5">
+              <LeftSideNav />
+            </div>
           </Offcanvas.Body>
         </Navbar.Offcanvas>
       </Container>
