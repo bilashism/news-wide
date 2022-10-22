@@ -3,12 +3,15 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { AuthContext } from "../../authentication/AuthProvider/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { userLogIn } = useContext(AuthContext);
   const [feedback, setFeedback] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location?.state?.from?.pathName || "/";
 
   const handleUserLogIn = ev => {
     ev.preventDefault();
@@ -22,7 +25,7 @@ const Login = () => {
         form.reset();
         console.log(user);
         setFeedback("");
-        navigate("/");
+        navigate(from, { replace: true });
       })
       .catch(err => {
         setFeedback(err?.message.replace("Firebase: ", ""));

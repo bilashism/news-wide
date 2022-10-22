@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { AuthContext } from "../../authentication/AuthProvider/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -71,7 +71,16 @@ const Register = () => {
               : `We'll never share your email with anyone else.`}
           </Form.Text>
         </div>
-
+        <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Check
+            type="checkbox"
+            label={
+              <>
+                Check out our <Link to="/terms"> terms and conditions </Link>{" "}
+              </>
+            }
+          />
+        </Form.Group>
         <Button variant="primary" type="submit">
           Submit
         </Button>
