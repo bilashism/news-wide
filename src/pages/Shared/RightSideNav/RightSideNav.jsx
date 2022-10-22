@@ -1,19 +1,35 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button, ButtonGroup, Carousel, ListGroup } from "react-bootstrap";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub, FaFacebook, FaTwitter } from "react-icons/fa";
 import brands1 from "../../../assets/brands/brands-1.webp";
 import brands2 from "../../../assets/brands/brands-2.webp";
 import brands3 from "../../../assets/brands/brands-3.webp";
+import { AuthContext } from "../../../authentication/AuthProvider/AuthProvider";
+import { GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
+const googleAuthProvider = new GoogleAuthProvider();
+const githubAuthProvider = new GithubAuthProvider();
 
 const RightSideNav = () => {
+  const { providerLogin } = useContext(AuthContext);
+  const handleProviderLogin = provider =>
+    providerLogin(provider)
+      .then(data => {
+        console.log(data);
+      })
+      .catch(err => console.error(err));
+
   return (
     <div>
       <ButtonGroup vertical className="w-100 gap-2">
-        <Button variant="outline-dark">
+        <Button
+          onClick={() => handleProviderLogin(googleAuthProvider)}
+          variant="outline-dark">
           <FcGoogle /> log in with google
         </Button>
-        <Button variant="outline-dark">
+        <Button
+          onClick={() => handleProviderLogin(githubAuthProvider)}
+          variant="outline-dark">
           <FaGithub /> log in with github
         </Button>
       </ButtonGroup>
