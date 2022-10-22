@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { userLogIn } = useContext(AuthContext);
+  const [feedback, setFeedback] = useState("");
   const navigate = useNavigate();
 
   const handleUserLogIn = ev => {
@@ -20,9 +21,13 @@ const Login = () => {
         const user = result.user;
         form.reset();
         console.log(user);
+        setFeedback("");
         navigate("/");
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        setFeedback(err?.message.replace("Firebase: ", ""));
+        console.error(err);
+      });
   };
 
   return (
@@ -49,7 +54,9 @@ const Login = () => {
 
         <div className="">
           <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
+            {feedback
+              ? feedback
+              : `We'll never share your email with anyone else.`}
           </Form.Text>
         </div>
 

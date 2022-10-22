@@ -1,11 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { AuthContext } from "../../authentication/AuthProvider/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate();
+  const [feedback, setFeedback] = useState("");
 
   const { createUser } = useContext(AuthContext);
   const handleUserRegistration = ev => {
@@ -20,10 +22,14 @@ const Register = () => {
       .then(result => {
         const user = result.user;
         form.reset();
+        setFeedback("");
         console.log(user);
         navigate("/");
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        setFeedback(err?.message.replace("Firebase: ", ""));
+        console.error(err);
+      });
   };
   return (
     <div>
@@ -60,7 +66,9 @@ const Register = () => {
 
         <div className="">
           <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
+            {feedback
+              ? feedback
+              : `We'll never share your email with anyone else.`}
           </Form.Text>
         </div>
 
