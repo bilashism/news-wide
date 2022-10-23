@@ -9,7 +9,18 @@ const Register = () => {
   const navigate = useNavigate();
   const [feedback, setFeedback] = useState("");
 
-  const { createUser } = useContext(AuthContext);
+  const { createUser, updateUserProfile } = useContext(AuthContext);
+  const handleUpdateUserProfile = (name, photoUrl) => {
+    const profile = {
+      displayName: name,
+      photoURL: photoUrl
+    };
+    updateUserProfile(profile)
+      .then(data => {
+        console.log(data);
+      })
+      .catch(err => console.error(err));
+  };
   const handleUserRegistration = ev => {
     ev.preventDefault();
     const form = ev.target;
@@ -21,6 +32,7 @@ const Register = () => {
     createUser(email, password)
       .then(result => {
         const user = result.user;
+        handleUpdateUserProfile(name, photoUrl);
         form.reset();
         setFeedback("");
         console.log(user);
