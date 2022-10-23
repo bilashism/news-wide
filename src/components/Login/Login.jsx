@@ -4,9 +4,10 @@ import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { AuthContext } from "../../authentication/AuthProvider/AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Login = () => {
-  const { userLogIn } = useContext(AuthContext);
+  const { userLogIn, setAuthLoading } = useContext(AuthContext);
   const [feedback, setFeedback] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
@@ -25,11 +26,18 @@ const Login = () => {
         form.reset();
         console.log(user);
         setFeedback("");
-        navigate(from, { replace: true });
+        if (user?.emailVerified) {
+          navigate(from, { replace: true });
+        } else {
+          toast.error("please verify your email");
+        }
       })
       .catch(err => {
         setFeedback(err?.message.replace("Firebase: ", ""));
         console.error(err);
+      })
+      .finally(() => {
+        setAuthLoading(false);
       });
   };
 

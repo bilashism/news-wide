@@ -1,0 +1,4 @@
+img.card-img-top {
+  -o-object-fit: cover;
+  object-fit: cover;
+}

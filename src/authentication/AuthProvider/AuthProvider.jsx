@@ -3,6 +3,7 @@ import {
   getAuth,
   updateProfile,
   signInWithPopup,
+  sendEmailVerification,
   signOut,
   onAuthStateChanged,
   createUserWithEmailAndPassword,
@@ -38,9 +39,15 @@ const AuthProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
+  const verifyEmail = () => {
+    return sendEmailVerification(auth.currentUser);
+  };
+
   useEffect(() => {
     const cleanup = onAuthStateChanged(auth, currentUser => {
-      setUser(prev => (prev = { ...user, ...currentUser }));
+      if (currentUser === null || currentUser?.emailVerified) {
+        setUser(prev => (prev = { ...user, ...currentUser }));
+      }
       setAuthLoading(false);
     });
 
@@ -51,7 +58,9 @@ const AuthProvider = ({ children }) => {
     user,
     createUser,
     updateUserProfile,
+    verifyEmail,
     authLoading,
+    setAuthLoading,
     providerLogin,
     userLogIn,
     logOut

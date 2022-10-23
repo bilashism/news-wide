@@ -4,12 +4,14 @@ import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { AuthContext } from "../../authentication/AuthProvider/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Register = () => {
   const navigate = useNavigate();
   const [feedback, setFeedback] = useState("");
 
-  const { createUser, updateUserProfile } = useContext(AuthContext);
+  const { createUser, updateUserProfile, verifyEmail } =
+    useContext(AuthContext);
   const handleUpdateUserProfile = (name, photoUrl) => {
     const profile = {
       displayName: name,
@@ -21,6 +23,15 @@ const Register = () => {
       })
       .catch(err => console.error(err));
   };
+
+  const handleEmailVerify = () => {
+    verifyEmail()
+      .then(data => {
+        console.log(data);
+      })
+      .catch(err => console.error(err));
+  };
+
   const handleUserRegistration = ev => {
     ev.preventDefault();
     const form = ev.target;
@@ -32,9 +43,11 @@ const Register = () => {
     createUser(email, password)
       .then(result => {
         const user = result.user;
-        handleUpdateUserProfile(name, photoUrl);
         form.reset();
         setFeedback("");
+        handleUpdateUserProfile(name, photoUrl);
+        handleEmailVerify();
+        toast.success("Please verify your email!");
         console.log(user);
         navigate("/");
       })
